@@ -5,10 +5,9 @@ import { Social } from "./social";
 @Component({
   selector: "app-home",
   imports: [],
-  templateUrl: "./home.component.html",
-  styleUrl: "./home.component.scss",
+  templateUrl: "./home.html",
 })
-export class HomeComponent {
+export class Home {
   socials: Social[] = [
     { name: "AtCoder", url: "https://atcoder.jp/users/erict" },
     { name: "GitHub", url: "https://github.com/ericthalakottur" },

@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Ignore generated credentials from google-github-actions/auth
+gha-creds-*.json

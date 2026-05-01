@@ -1,9 +1,9 @@
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
-import { HomeComponent } from './home/home.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { Home } from "./home/home";
+import { PageNotFound } from "./page-not-found/page-not-found";
 
 export const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: '**', component: PageNotFoundComponent}
+  { path: "", component: Home },
+  { path: "**", component: PageNotFound },
 ];
