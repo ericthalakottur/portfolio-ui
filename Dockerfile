@@ -16,7 +16,7 @@ RUN pnpm run build
 ################################
 # RUN NGINX
 ################################
-FROM nginxinc/nginx-unprivileged:alpine3.23-perl@sha256:a1ae88ea0b8495cc3c7a062c4677902dfbd7c1d60c368c33e8e1a277a781a62e
+FROM nginxinc/nginx-unprivileged:alpine3.23-perl@sha256:8b87091ac53a3d9073fe265e83b2cb4dbeef3294e19ce3a802bf8f18184c79eb
 
 USER nginx
 
