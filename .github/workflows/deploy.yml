@@ -1,4 +1,4 @@
-name: Deploy Angular application to Compute Engine
+name: Deploy Angular application
 
 env:
   REGISTRY: ghcr.io
@@ -29,7 +29,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
 
-  codeql:
+  security:
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -43,23 +43,20 @@ jobs:
         uses: github/codeql-action/analyze@e46ed2cbd01164d986452f91f178727624ae40d7
         with:
           category: "/language:javascript-typescript"
-
-  secrets:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-        with:
-          fetch-depth: 0
       - name: Secret Scanning
         uses: trufflesecurity/trufflehog@17456f8c7d042d8c82c9a8ca9e937231f9f42e26
         with:
           extra_args: --results=verified,unknown
+      - name: Run Trivy vulnerability scanner in config mode
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
+        with:
+          scan-type: config
+          scan-ref: "."
 
   build-image:
     runs-on: ubuntu-latest
-    needs: [test, codeql, secrets]
+    needs: [test, security]
     permissions:
-      contents: read
       packages: write
       id-token: write
       attestations: write
@@ -88,6 +85,19 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
+  scan-image:
+    runs-on: ubuntu-latest
+    needs: [build-image]
+    steps:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: table
+          exit-code: "1"
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
