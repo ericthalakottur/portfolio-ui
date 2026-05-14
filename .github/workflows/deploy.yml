@@ -62,7 +62,7 @@ jobs:
       attestations: write
       artifact-metadata: write
     outputs:
-      digest: ${{ steps.push.outputs.digest }}
+      imageid: ${{ steps.push.outputs.imageid }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Docker Login
@@ -98,7 +98,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build-image.outputs.digest }}
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha256-${{ needs.build-image.outputs.imageid }}
           format: table
           exit-code: "1"
           vuln-type: os,library
