@@ -70,5 +70,4 @@ jobs:
         with:
           aws-region: ${{ vars.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE }}
-      - run: aws s3 sync ./dist/portfolio/browser ${{ secrets.S3_BUCKET1_URL }} --delete
-      - run: aws s3 sync ./dist/portfolio/browser ${{ secrets.S3_BUCKET2_URL }} --delete
+      - run: aws s3 sync ./dist/portfolio/browser ${{ secrets.S3_BUCKET_URL }} --delete
