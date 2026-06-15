@@ -1,7 +1,7 @@
 ################################
 # BUILD ANGULAR APP
 ################################
-FROM node:trixie-slim@sha256:74ab724acf22ae7b0af5cf8a0e762f6c981ba882a459e2abc80a97a7237a92f1 AS builder
+FROM node:trixie-slim@sha256:424cafd2a035ed2b2d74acc3142b68b426fb62a47742c80a75e7117db02d6b30 AS builder
 
 RUN npm install -g pnpm@latest-10
 
